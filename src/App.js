@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import TimerComponent from './components/TimerComponent';
 
 class App extends Component {
+  constructor(props){
+    super();
+    this.state = { rounds: 8 }
+  }
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <TimerComponent rounds = {this.state.rounds} onWorkoutComplete = {() => {console.log('The workout is complete!')}} />
       </div>
     );
   }
