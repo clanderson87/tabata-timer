@@ -15,7 +15,8 @@ class App extends Component {
         <TabataTimerComponent 
           rounds = {this.state.rounds} 
           onWorkoutComplete = {() => {console.log('The workout is complete!')}}
-          onRoundComplete = {() => console.log('The round is complete!')} />
+          onRoundComplete = {() => console.log('The round is complete!')}
+          onPause = {(paused) => console.log('Paused:', paused)} />
       </div>
     );
   }

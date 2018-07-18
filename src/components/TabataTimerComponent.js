@@ -1,9 +1,21 @@
 import React from 'react';
 
+/*
+  Takes 4 props:
+    rounds: number
+      -Number of 30 second (20s Active, 10s rest) rounds for the workout
+    onRoundComplete: function()
+      -Function to fire at the completion of a round (should fire every 30 seconds)
+    onWorkoutComplete: function()
+      -Function to fire at completion of final round
+    onPause: function(bool)
+      -Function to fire on pause.
+*/
+
 class TabataTimerComponent extends React.Component {
   constructor(props){
     super();
-    this.state = { seconds: 20, rest: false, flips: 0, completedRounds: 0 };
+    this.state = { seconds: 20, rest: false, paused: false, completedRounds: 0 };
   }
 
   componentDidMount() {
@@ -36,7 +48,10 @@ class TabataTimerComponent extends React.Component {
   }
 
   pauseOrUnpauseRound = () => {
-    this.setState({ paused: !this.state.paused });
+    let { paused } = this.state;
+    paused = !paused;
+    this.setState({ paused });
+    this.props.onPause(paused);
   }
 
   render(){
