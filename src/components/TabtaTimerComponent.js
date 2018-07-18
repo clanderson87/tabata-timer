@@ -1,6 +1,6 @@
 import React from 'react';
 
-class TimerComponent extends React.Component {
+class TabataTimerComponent extends React.Component {
   constructor(props){
     super();
     this.state = { seconds: 20, rest: false, flips: 0, completedRounds: 0 };
@@ -49,4 +49,4 @@ class TimerComponent extends React.Component {
   }
 }
 
-export default TimerComponent;
+export default TabataTimerComponent;
