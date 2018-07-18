@@ -12,15 +12,17 @@ class TimerComponent extends React.Component {
 
   countDown = () => {
     let { paused, seconds, rest, completedRounds } = this.state;
+    const { onWorkoutComplete, onRoundComplete, rounds } = this.props;
     if(paused){
       return;
     }
     seconds -= 1;
     if(seconds < 0){
       completedRounds += 0.5;
-      if(completedRounds >= this.props.rounds){
+      completedRounds % 1 ? null : onRoundComplete()
+      if(completedRounds >= rounds){
         clearInterval(this.interval);
-        return this.props.onWorkoutComplete();
+        return onWorkoutComplete();
       }
       seconds = rest ? 20 : 10;
       rest = !rest;

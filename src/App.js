@@ -8,10 +8,14 @@ class App extends Component {
     super();
     this.state = { rounds: 8 }
   }
+  
   render() {
     return (
       <div className="App">
-        <TimerComponent rounds = {this.state.rounds} onWorkoutComplete = {() => {console.log('The workout is complete!')}} />
+        <TimerComponent 
+          rounds = {this.state.rounds} 
+          onWorkoutComplete = {() => {console.log('The workout is complete!')}}
+          onRoundComplete = {() => console.log('The round is complete!')} />
       </div>
     );
   }
