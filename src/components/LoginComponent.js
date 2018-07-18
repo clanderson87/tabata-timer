@@ -23,25 +23,36 @@ class LoginComponent extends React.Component {
   }
 
   checkForUser = () => {
-    console.log('Checking For User!')
+    let i = 0;
+    let interval = setInterval(() => {
+      let { currentUser } = firebase.auth();
+      if (currentUser !== undefined) {
+        this.props.onUserSet(currentUser);
+        clearInterval(interval);
+      };
+      if (i > 4) {
+        clearInterval(interval);
+      }
+    }, 1250);
   }
 
-  loginWithProvider = service => {
+  loginWithProvider = async service => {
+    console.log('firing!')
+    const { onUserSet, onError } = this.props;
     const provider =
       service === "google" ?
       new firebase.auth.GoogleAuthProvider() :
       new firebase.auth.FacebookAuthProvider();
-    try {
-      firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-      .then(async () => {
+    
+    await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+      try {
         let { user } = await firebase.auth().signInWithPopup(provider);
         let { displayName = null, email = null, photoURL = null, uid } = user;
-        this.props.onUserSet({ displayName, email, photoURL, uid })
-      })
-    } catch (e) {
-      this.props.onError(e);
+        onUserSet({ displayName, email, photoURL, uid })
+      } catch (e) {
+        onError(e);
+      }
     }
-  };
 
   loginWithEmailAndPassword = (email, password) => {
     const { onUserSet, onError } = this.props;
