@@ -37,7 +37,6 @@ class LoginComponent extends React.Component {
   }
 
   loginWithProvider = async service => {
-    console.log('firing!')
     const { onUserSet, onError } = this.props;
     const provider =
       service === "google" ?
@@ -54,29 +53,27 @@ class LoginComponent extends React.Component {
       }
     }
 
-  loginWithEmailAndPassword = (email, password) => {
+  loginWithEmailAndPassword = async (email, password) => {
     const { onUserSet, onError } = this.props;
     const setUser = user => {
       onUserSet({ uid: user.uid })
     }
-    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-      .then(async () => {
+    await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)  
+    try {
+      let {user} = await firebase.auth().signInWithEmailAndPassword(email, password);
+      setUser(user);
+    } catch(e){
+      if(e.code === userNotFoundCode){
         try {
-          let {user} = await firebase.auth().signInWithEmailAndPassword(email, password);
+          let { user } = await firebase.auth().createUserWithEmailAndPassword(email, password);
           setUser(user);
-        } catch(e){
-          if(e.code === userNotFoundCode){
-            try {
-              let { user } = await firebase.auth().createUserWithEmailAndPassword(email, password);
-              setUser(user);
-            } catch (er) {
-              onError(er)
-            }
-          } else {
-            onError(e)
-          }
+        } catch (er) {
+          onError(er)
         }
-      })
+      } else {
+        onError(e)
+      }
+    }
   }
 
   renderEmailAndPasswordInputs = () => {
