@@ -8,15 +8,13 @@ Takes 1 prop:
 */
 class GifComponent extends React.Component {
   constructor(props){
-    super()
-    this.state = { playing: true }
+    super();
   }
 
   screenWidth = window.screen.availWidth * 0.75;
-
   render() {
     return <div>
-        <img src = { this.props.data } width = { this.screenWidth } height = {'auto'}/>
+        <img src = { this.props.playing ? this.props.data.gif : this.props.data.static } width = { this.screenWidth } height = {'auto'}/>
       </div>
   }
 }
