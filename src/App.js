@@ -16,7 +16,8 @@ class App extends Component {
           rounds = {this.state.rounds} 
           onWorkoutComplete = {() => {console.log('The workout is complete!')}}
           onRoundComplete = {() => console.log('The round is complete!')}
-          onPause = {(paused) => console.log('Paused:', paused)} />
+          onPause = {(paused) => console.log('Paused:', paused)}
+          onRest = {() => console.log('resting')}/>
       </div>
     );
   }
