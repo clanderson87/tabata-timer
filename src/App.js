@@ -15,29 +15,47 @@ class App extends Component {
         gif: 'https://firebasestorage.googleapis.com/v0/b/tabata-timer-0df43.appspot.com/o/2%20-%20x4Dsdd6.gif?alt=media&token=b97a79e8-c002-410b-bfed-2faf4658b48a',
         static: 'https: //i.imgur.com/Hwo8ADe.jpg'
       },
-      playing: true
+      playing: true,
+      user: false
     }
     firebase.initializeApp(firebaseSecret);
+  }
+
+  renderLoginComponent = () => {
+    return this.state.user ? null : <LoginComponent 
+          onUserSet = {(user) => this.setState({ user })}
+          onError = {(error) => this.setState({ error })} />
+  }
+
+  renderControls = () => {
+    return this.state.user ? 
+      this.state.workout ? null : 
+      <ControlsComponent 
+        inputGroup = {[{label: 'Label', type: 'number', value: 'controlled', propertyName: 'number'}]}
+        inputStyle = {{ border: 'none', borderBottom: '2px solid red' }}
+        inputGroupStyle = {{color: 'red' }}
+        buttonGroup = {[{text: 'THIS IS BUTTON', onClick: 'setState', propertyName: 'property' }]} /> : null;
+  }
+
+  renderWorkout = () => {
+    return this.state.workout ? 
+      <div>
+        <TabataTimerComponent 
+          rounds = {this.state.rounds} 
+          onWorkoutComplete = {() => console.log('The workout is complete!')}
+          onRoundComplete = {() => console.log('The round is complete!')} />
+        <GifComponent 
+          data = { this.state.data } 
+          playing = { this.state.playing } />
+      </div> : null;
   }
 
   render() {
     return (
       <div className="App">
-        <LoginComponent 
-          onUserSet = {(user) => console.log('user:', user)}
-          onError = {(error) => console.log(error)} />
-        <TabataTimerComponent 
-          rounds = {this.state.rounds} 
-          onWorkoutComplete = {() => {console.log('The workout is complete!')}}
-          onRoundComplete = {() => console.log('The round is complete!')} />
-        <GifComponent 
-          data = { this.state.data } 
-          playing = { this.state.playing } />
-        <ControlsComponent 
-          inputGroup = {[{label: 'Label', type: 'number', value: 'controlled', propertyName: 'number'}]}
-          inputStyle = {{ border: 'none', borderBottom: '2px solid red' }}
-          inputGroupStyle = {{color: 'red' }}
-          buttonGroup = {[{text: 'THIS IS BUTTON', onClick: 'setState', propertyName: 'property' }]} />
+        {this.renderLoginComponent()}
+        {this.renderWorkout()}
+        {this.renderControls()}
       </div>
     );
   }
