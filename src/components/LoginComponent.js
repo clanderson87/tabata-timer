@@ -26,7 +26,7 @@ class LoginComponent extends React.Component {
     let i = 0;
     let interval = setInterval(() => {
       let { currentUser } = firebase.auth();
-      if (currentUser !== undefined) {
+      if (currentUser !== undefined && currentUser !== null) {
         this.props.onUserSet(currentUser);
         clearInterval(interval);
       };
