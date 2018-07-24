@@ -10,6 +10,8 @@ import React from 'react';
       -Function to fire at completion of final round
     onPause: function(bool)
       -Function to fire on pause.
+    onRest: function(bool)
+      -function to fire on rest period
 */
 
 class TabataTimerComponent extends React.Component {
@@ -24,14 +26,14 @@ class TabataTimerComponent extends React.Component {
 
   countDown = () => {
     let { paused, seconds, rest, completedRounds } = this.state;
-    const { onWorkoutComplete, onRoundComplete, rounds } = this.props;
+    const { onWorkoutComplete, onRoundComplete, rounds, onRest } = this.props;
     if(paused){
       return;
     }
     seconds -= 1;
     if(seconds < 0){
       completedRounds += 0.5;
-      completedRounds % 1 ? null : onRoundComplete()
+      completedRounds % 1 ? onRest() : onRoundComplete();
       if(completedRounds >= rounds){
         clearInterval(this.interval);
         return onWorkoutComplete();
