@@ -11,7 +11,7 @@ class App extends Component {
     super();
     this.state = {
       rounds: 8,
-      data: {
+      gifData: {
         gif: 'https://firebasestorage.googleapis.com/v0/b/tabata-timer-0df43.appspot.com/o/2%20-%20x4Dsdd6.gif?alt=media&token=b97a79e8-c002-410b-bfed-2faf4658b48a',
         static: 'https: //i.imgur.com/Hwo8ADe.jpg'
       },
@@ -31,10 +31,15 @@ class App extends Component {
     return this.state.user ? 
       this.state.workout ? null : 
       <ControlsComponent 
-        inputGroup = {[{label: 'Label', type: 'number', value: 'controlled', propertyName: 'number'}]}
+        inputGroup = {[{label: 'rounds', type: 'number', value: 'controlled', propertyName: 'rounds'}]}
         inputStyle = {{ border: 'none', borderBottom: '2px solid red' }}
         inputGroupStyle = {{color: 'red' }}
-        buttonGroup = {[{text: 'THIS IS BUTTON', onClick: 'setState', propertyName: 'property' }]} /> : null;
+        buttonGroup = {[
+          {text: 'Pullup-Bar', onClick: 'setState', propertyName: 'pullupBar' },
+          {text: 'Low Impact', onClick: 'setState', propertyName: 'lowImpact' },
+          {text: 'Box', onClick: 'setState', propertyName: 'box' }
+      ]}
+        submitButton={{text:'Get Workout', onClick: (data) => this.setState({ ...data})}} /> : null;
   }
 
   renderWorkout = () => {
@@ -45,7 +50,7 @@ class App extends Component {
           onWorkoutComplete = {() => console.log('The workout is complete!')}
           onRoundComplete = {() => console.log('The round is complete!')} />
         <GifComponent 
-          data = { this.state.data } 
+          data = { this.state.gifData } 
           playing = { this.state.playing } />
       </div> : null;
   }
