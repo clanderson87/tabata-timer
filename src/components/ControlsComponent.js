@@ -19,6 +19,12 @@ Takes props:
   inputGroupStyle: style for the inputGroup as a whole
   buttonStyle: style object for each individual button of buttonGroup
   buttonGroupStyle: style for the buttonGroup as a whole
+  submitButton: {text: string, onClick: function(ControlsComponent.state)}
+    -text: string -> text for submit button (defaults to 'submit')
+    -onClick: function(ControlsComponent.state) -> function to call on clicking of submit button
+      (REQUIRED!)
+      (RECOMMENDED: App.setState({data: ControlsComponent.state}))
+  submitButtonStyle: style object for the submit button
   
 */
 
@@ -55,6 +61,7 @@ class ControlsComponent extends React.Component {
           return <button style = {this.props.buttonStyle} key = {generateRandomKeyString()} onClick = {btn.onClick === 'setState' ? () => this.setState({[btn.propertyName]: !this.state[btn.propertyName]}) : () => btn.onClick}>{btn.text}</button>
         })}
       </div>
+      <button style = {this.props.submitButtonStyle} onClick = {() => this.props.submitButton.onClick(this.state)}>{this.props.submitButton.text}</button>
     </div>
   }
 }
