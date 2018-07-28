@@ -40,7 +40,7 @@ class App extends Component {
           {text: 'Low Impact', onClick: 'setState', propertyName: 'lowImpact' },
           {text: 'Box', onClick: 'setState', propertyName: 'box' }
       ]}
-        submitButton={{text:'Get Workout', onClick: (data) => this.setState({ ...data})}} /> : null;
+        submitButton={{text:'Get Workout', onClick: (data) => getWorkoutsFromFirebase({...data})}} /> : null;
   }
 
   renderWorkout = () => {
