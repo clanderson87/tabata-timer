@@ -5,6 +5,7 @@ import TabataTimerComponent from './components/TabataTimerComponent';
 import LoginComponent from './components/LoginComponent';
 import GifComponent from './components/GifComponent';
 import ControlsComponent from './components/ControlsComponent';
+import getWorkoutsFromFirebase from './actions/getWorkoutsFromFirebase';
 
 class App extends Component {
   constructor(props){
