@@ -30,9 +30,9 @@ const getWorkoutsFromFirebase = obj => {
   const ascOrDsc = Math.random() >= 0.5 ? 'asc' : 'desc';
   const operator = Math.random() >= 0.5 ? '>=' : '<=';
 
-  const { pullupBar, lowImpact, box, rounds } = obj;
+  const { pullupBar = false, lowImpact = false, box = false, rounds = 8 } = obj;
 
-  console.log(obj);
+  console.log(pullupBar, lowImpact, box, rounds);
   if(!pullupBar){
     workoutsRef = workoutsRef.where('pullup', '==', pullupBar);
   }
@@ -44,7 +44,7 @@ const getWorkoutsFromFirebase = obj => {
   }
 
   workoutsRef.where('id', operator, key);
-  workoutsRef.orderBy('id', ascOrDsc).limit((rounds/2) || 4).get()
+  return workoutsRef.orderBy('id', ascOrDsc).limit(rounds/2).get()
     .then(snap => {
       snap.forEach(doc => results.push(doc.data()))
       return results;

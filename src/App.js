@@ -14,7 +14,7 @@ class App extends Component {
       rounds: 8,
       gifData: {
         gif: 'https://firebasestorage.googleapis.com/v0/b/tabata-timer-0df43.appspot.com/o/2%20-%20x4Dsdd6.gif?alt=media&token=b97a79e8-c002-410b-bfed-2faf4658b48a',
-        static: 'https: //i.imgur.com/Hwo8ADe.jpg'
+        still: 'https: //i.imgur.com/Hwo8ADe.jpg'
       },
       playing: true,
       user: false
@@ -26,6 +26,20 @@ class App extends Component {
     return this.state.user ? null : <LoginComponent 
           onUserSet = {(user) => this.setState({ user })}
           onError = {(error) => this.setState({ error })} />
+  }
+
+  loadNextRound = () => {
+    let { currentRound, workout, rest }  = this.state;
+    currentRound++;
+    let { gif, still } = workout[currentRound];
+    this.setState({ rest: !rest, gifData: { gif, still }, currentRound });
+  }
+
+  getWorkoutsAndUpdate = async obj => {
+    let workout = await getWorkoutsFromFirebase(obj);
+    if(workout){
+      this.setState({ workout, gifData: { gif:  workout[0].gif, still: workout[0].still }, currentRound: 1})
+    }
   }
 
   renderControls = () => {
@@ -40,7 +54,7 @@ class App extends Component {
           {text: 'Low Impact', onClick: 'setState', propertyName: 'lowImpact' },
           {text: 'Box', onClick: 'setState', propertyName: 'box' }
       ]}
-        submitButton={{text:'Get Workout', onClick: (data) => getWorkoutsFromFirebase({...data})}} /> : null;
+        submitButton={{text:'Get Workout', onClick: (data) => this.getWorkoutsAndUpdate({...data})}} /> : null;
   }
 
   renderWorkout = () => {
@@ -48,10 +62,12 @@ class App extends Component {
       <div>
         <TabataTimerComponent 
           rounds = {this.state.rounds} 
-          onWorkoutComplete = {() => console.log('The workout is complete!')}
-          onRoundComplete = {() => console.log('The round is complete!')} />
+          onWorkoutComplete = {() => this.setState({ currentRound: null, rest: false, playing: false, workout: null, gifData: null})}
+          onRoundComplete = {() => this.loadNextRound()}
+          onPause = {() => this.setState({playing: !this.state.playing})} 
+          onRest = {() => this.setState({ rest: true })}/>
         <GifComponent 
-          data = { this.state.gifData } 
+          data = { this.state.rest ? 'https://thumbs.gfycat.com/CloseFearfulAgama-size_restricted.gif' : this.state.gifData } 
           playing = { this.state.playing } />
       </div> : null;
   }
