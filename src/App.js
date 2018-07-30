@@ -67,7 +67,9 @@ class App extends Component {
           onPause = {() => this.setState({playing: !this.state.playing})} 
           onRest = {() => this.setState({ rest: true })}/>
         <GifComponent 
-          data = { this.state.rest ? 'https://thumbs.gfycat.com/CloseFearfulAgama-size_restricted.gif' : this.state.gifData } 
+          data = {
+            this.state.rest ? 'https://firebasestorage.googleapis.com/v0/b/tabata-timer-0df43.appspot.com/o/Webp.net-gifmaker.gif?alt=media&token=6ca19ca6-1c3c-4c6c-bac9-368934dfd8ee' : this.state.gifData
+          }
           playing = { this.state.playing } />
       </div> : null;
   }
