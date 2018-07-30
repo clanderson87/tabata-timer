@@ -29,8 +29,12 @@ class App extends Component {
   }
 
   loadNextRound = () => {
-    let { currentRound, workout, rest }  = this.state;
-    currentRound++;
+    let { currentRound, workout, rest, rounds }  = this.state;
+    if(currentRound === (rounds/2) - 1){
+      currentRound = 0;
+    } else {
+      currentRound++;
+    }
     let { gif, still } = workout[currentRound];
     this.setState({ rest: !rest, gifData: { gif, still }, currentRound });
   }
@@ -38,7 +42,7 @@ class App extends Component {
   getWorkoutsAndUpdate = async obj => {
     let workout = await getWorkoutsFromFirebase(obj);
     if(workout){
-      this.setState({ workout, gifData: { gif:  workout[0].gif, still: workout[0].still }, currentRound: 1})
+      this.setState({ workout, gifData: { gif:  workout[0].gif, still: workout[0].still }, currentRound: 0})
     }
   }
 
@@ -68,7 +72,7 @@ class App extends Component {
           onRest = {() => this.setState({ rest: true })}/>
         <GifComponent 
           data = {
-            this.state.rest ? 'https://firebasestorage.googleapis.com/v0/b/tabata-timer-0df43.appspot.com/o/Webp.net-gifmaker.gif?alt=media&token=6ca19ca6-1c3c-4c6c-bac9-368934dfd8ee' : this.state.gifData
+            this.state.rest ? { gif: 'https://firebasestorage.googleapis.com/v0/b/tabata-timer-0df43.appspot.com/o/Webp.net-gifmaker.gif?alt=media&token=6ca19ca6-1c3c-4c6c-bac9-368934dfd8ee'} : this.state.gifData
           }
           playing = { this.state.playing } />
       </div> : null;
