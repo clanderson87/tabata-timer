@@ -42,7 +42,7 @@ class App extends Component {
   getWorkoutsAndUpdate = async obj => {
     let workout = await getWorkoutsFromFirebase(obj);
     if(workout){
-      this.setState({ workout, gifData: { gif:  workout[0].gif, still: workout[0].still }, currentRound: 0})
+      this.setState({ workout, gifData: { gif:  workout[0].gif, still: workout[0].still }, currentRound: 0, playing: true})
     }
   }
 
@@ -63,14 +63,15 @@ class App extends Component {
 
   renderWorkout = () => {
     return this.state.workout ? 
-      <div>
-        <TabataTimerComponent 
+      <div style = {styles.appStyle} >
+      <TabataTimerComponent 
+          style = {styles.timerStyle}
           rounds = {this.state.rounds} 
           onWorkoutComplete = {() => this.setState({ currentRound: null, rest: false, playing: false, workout: null, gifData: null})}
           onRoundComplete = {() => this.loadNextRound()}
           onPause = {() => this.setState({playing: !this.state.playing})} 
-          onRest = {() => this.setState({ rest: true })}/>
-        <GifComponent 
+          onRest = {() => this.setState({ rest: true })} />
+        <GifComponent
           data = {
             this.state.rest ? { gif: 'https://firebasestorage.googleapis.com/v0/b/tabata-timer-0df43.appspot.com/o/Webp.net-gifmaker.gif?alt=media&token=6ca19ca6-1c3c-4c6c-bac9-368934dfd8ee'} : this.state.gifData
           }
@@ -80,12 +81,29 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
+      <div className="App" style = {styles.appStyle}>
         {this.renderLoginComponent()}
         {this.renderWorkout()}
         {this.renderControls()}
       </div>
     );
+  }
+}
+
+const styles = {
+  appStyle: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: 'column'
+  },
+  timerStyle: {
+    position: 'fixed',
+    bottom: 30,
+    right: 0,
+    display: 'flex',
+    justifyContent: 'space-evenly',
+    width: '100%'
   }
 }
 

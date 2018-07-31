@@ -11,11 +11,17 @@ class GifComponent extends React.Component {
     super();
   }
 
-  screenWidth = window.screen.availWidth * 0.75;
   render() {
     return <div>
-        <img src = { this.props.playing ? this.props.data.gif : this.props.data.still } width = { this.screenWidth } height = {'auto'}/>
+        <img src = { this.props.playing ? this.props.data.gif : this.props.data.still } style = {styles.gifStyle} />
       </div>
+  }
+}
+
+const styles = {
+  gifStyle: {
+    width: window.innerWidth * 0.75,
+    height: 'auto'
   }
 }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 
 /*
-  Takes 4 props:
+  Takes 5 props:
     rounds: number
       -Number of 30 second (20s Active, 10s rest) rounds for the workout
     onRoundComplete: function()
@@ -57,12 +57,20 @@ class TabataTimerComponent extends React.Component {
   }
 
   render(){
-    return <div>
-            {this.state.seconds}
+    return <div style = { styles.timerStyle }>
+            {this.state.rest ? null : this.state.seconds}
             <button onClick = {this.pauseOrUnpauseRound}>
               <i className ='material-icons'>{this.state.paused ? 'play_arrow' : 'pause'}</i>
             </button>
     </div>
+  }
+}
+
+const styles = {
+  timerStyle: {
+    display: 'flex',
+    justifyContent: 'space-around',
+    alignItems: 'center'
   }
 }
 
