@@ -99,14 +99,25 @@ class LoginComponent extends React.Component {
 
   render() {
     if(!this.state.emailPassword){
-      return <div>
-        <button onClick = {() => this.loginWithProvider('google')}>Login with Google</button>
-        <button onClick = {() => this.loginWithProvider('facebook')}>Login with Facebook</button>
-        <button onClick = {() => this.setState({emailPassword: true})}>Login with Email</button>
+      return <div style = {{margin: '5%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+        <button onClick = {() => this.loginWithProvider('google')} className = "loginBtn loginBtn--google">Login with Google</button>
+        <button onClick = {() => this.loginWithProvider('facebook')} className = "loginBtn loginBtn--facebook">Login with Facebook</button>
+        <button onClick = {() => this.setState({emailPassword: true})} style = {styles.buttonStyle}>Login with Email</button>
       </div>
     } else {
       return this.renderEmailAndPasswordInputs()
     }
+  }
+}
+
+const styles = {
+  buttonStyle: {
+    background: 'white',
+    color: 'black',
+    border: '2px solid grey',
+    borderRadius: '8px',
+    fontSize: 22,
+    marginTop: '1%'
   }
 }
 
