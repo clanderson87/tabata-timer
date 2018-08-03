@@ -2,7 +2,7 @@ import React from 'react';
 /*
 
 Takes 1 prop:
-  Data: GifObj { gif: URL(gif), static: URL(img)}
+  Data: GifObj { gif: URL(gif), still: URL(img)}
     -URL of Gif to be displayed
 
 */
@@ -11,11 +11,17 @@ class GifComponent extends React.Component {
     super();
   }
 
-  screenWidth = window.screen.availWidth * 0.75;
   render() {
     return <div>
-        <img src = { this.props.playing ? this.props.data.gif : this.props.data.static } width = { this.screenWidth } height = {'auto'}/>
+        <img src = { this.props.playing ? this.props.data.gif : this.props.data.still } style = {styles.gifStyle} />
       </div>
+  }
+}
+
+const styles = {
+  gifStyle: {
+    width: window.innerWidth * 0.75,
+    height: 'auto'
   }
 }
 

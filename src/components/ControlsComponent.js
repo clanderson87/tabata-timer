@@ -15,9 +15,10 @@ Takes props:
     -onClick: 'setState' -> to setState of controlsComponent 
             : function() -> to a function other than setState
     -propertyName: string - > name of ControlsComponent.state to effect
+    -check: bool -> buttons should act like checkboxes and have different styles depending on the status of state that they effect
   inputStyle: style object for each individual input of inputGroup
   inputGroupStyle: style for the inputGroup as a whole
-  buttonStyle: style object for each individual button of buttonGroup
+  buttonStyle: {standard: {style object for each individual button of buttonGroup}, checked: {style obj for each clicked button}}
   buttonGroupStyle: style for the buttonGroup as a whole
   submitButton: {text: string, onClick: function(ControlsComponent.state)}
     -text: string -> text for submit button (defaults to 'submit')
@@ -38,7 +39,9 @@ class ControlsComponent extends React.Component {
     this.state = {};
   }
 
-  inputKeys = [];
+  inputKeys = [
+    'asd3safe','dejj7dos','irqn94sd','okweda4s','plasf2jw'
+  ];
 
   componentDidMount(){
     for (let i = 0; i < this.props.inputGroup.length; i++){
@@ -47,18 +50,26 @@ class ControlsComponent extends React.Component {
   }
 
   render(){
-    return <div>
+    return <div style= {this.props.componentStyle} >
       <div style = { this.props.inputGroupStyle }>
         {this.props.inputGroup.map((obj, i)=> {
           return <div key = {this.inputKeys[i]}>
-            <label>{obj.label}</label>
-            <input style = {this.props.inputStyle} type={obj.type} value={obj.value === 'controlled' ? this.state[obj.propertyName] : obj.value } onChange={obj.onChange ? obj.onChange : (e) => this.setState({[obj.propertyName]: e.target.value })} />
+            <input style = {this.props.inputStyle} placeholder={obj.label} type={obj.type} value={obj.value === 'controlled' ? this.state[obj.propertyName] : obj.value } onChange={obj.onChange ? obj.onChange : (e) => this.setState({[obj.propertyName]: e.target.value })} />
           </div>
         })}
       </div>
       <div style = {this.props.buttonGroupStyle}>
         {this.props.buttonGroup.map((btn) => {
-          return <button style = {this.props.buttonStyle} key = {generateRandomKeyString()} onClick = {btn.onClick === 'setState' ? () => this.setState({[btn.propertyName]: !this.state[btn.propertyName]}) : () => btn.onClick}>{btn.text}</button>
+          return <button 
+            style = {btn.check ? this.state[btn.propertyName] ? 
+                      this.props.buttonStyle.checked : 
+                      this.props.buttonStyle.standard 
+                    : this.props.buttonStyle.standard} 
+            key = {generateRandomKeyString()} 
+            onClick = {btn.onClick === 'setState' ? 
+              () => this.setState({[btn.propertyName]: !this.state[btn.propertyName]}) : 
+              () => btn.onClick}>
+            {btn.text}</button>
         })}
       </div>
       <button style = {this.props.submitButtonStyle} onClick = {() => this.props.submitButton.onClick(this.state)}>{this.props.submitButton.text}</button>
